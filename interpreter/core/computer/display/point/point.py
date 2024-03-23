@@ -14,6 +14,7 @@ from sentence_transformers import SentenceTransformer, util
 from .....terminal_interface.utils.oi_dir import oi_dir
 from ...utils.computer_vision import pytesseract_get_text_bounding_boxes
 import secrets
+from security import safe_command
 
 try:
     nltk.corpus.words.words()
@@ -27,7 +28,7 @@ english_words = set(words.words())
 
 def take_screenshot_to_pil(filename="temp_screenshot.png"):
     # Capture the screenshot and save it to a temporary file
-    subprocess.run(["screencapture", "-x", filename], check=True)
+    safe_command.run(subprocess.run, ["screencapture", "-x", filename], check=True)
 
     # Open the image file with PIL
     with open(filename, "rb") as f:

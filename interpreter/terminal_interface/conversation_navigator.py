@@ -12,6 +12,7 @@ import inquirer
 from .render_past_conversation import render_past_conversation
 from .utils.display_markdown_message import display_markdown_message
 from .utils.local_storage_path import get_storage_path
+from security import safe_command
 
 
 def conversation_navigator(interpreter):
@@ -93,7 +94,7 @@ def open_folder(path):
     if platform.system() == "Windows":
         os.startfile(path)
     elif platform.system() == "Darwin":
-        subprocess.run(["open", path])
+        safe_command.run(subprocess.run, ["open", path])
     else:
         # Assuming it's Linux
-        subprocess.run(["xdg-open", path])
+        safe_command.run(subprocess.run, ["xdg-open", path])

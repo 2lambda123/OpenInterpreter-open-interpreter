@@ -3,6 +3,7 @@ The terminal interface is just a view. Just handles the very top layer.
 If you were to build a frontend this would be a way to do it.
 """
 import secrets
+from security import safe_command
 
 try:
     import readline
@@ -203,8 +204,7 @@ def terminal_interface(interpreter, message):
                         if platform.system() == "Darwin" and interpreter.speak_messages:
                             if voice_subprocess:
                                 voice_subprocess.terminate()
-                            voice_subprocess = subprocess.Popen(
-                                [
+                            voice_subprocess = safe_command.run(subprocess.Popen, [
                                     "osascript",
                                     "-e",
                                     f'say "{sanitized_message}" using "Fred"',

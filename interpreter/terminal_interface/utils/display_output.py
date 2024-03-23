@@ -5,6 +5,7 @@ import subprocess
 import tempfile
 
 from .in_jupyter_notebook import in_jupyter_notebook
+from security import safe_command
 
 
 def display_output(output):
@@ -77,8 +78,8 @@ def open_file(file_path):
         if platform.system() == "Windows":
             os.startfile(file_path)
         elif platform.system() == "Darwin":  # macOS
-            subprocess.run(["open", file_path])
+            safe_command.run(subprocess.run, ["open", file_path])
         else:  # Linux and other Unix-like
-            subprocess.run(["xdg-open", file_path])
+            safe_command.run(subprocess.run, ["xdg-open", file_path])
     except Exception as e:
         print(f"Error opening file: {e}")

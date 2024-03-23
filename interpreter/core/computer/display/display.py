@@ -11,6 +11,7 @@ import requests
 
 from ...utils.lazy_import import lazy_import
 from ..utils.recipient_utils import format_to_recipient
+from security import safe_command
 
 # Still experimenting with this
 # from utils.get_active_window import get_active_window
@@ -268,7 +269,7 @@ from PIL import Image
 
 def take_screenshot_to_pil(filename="temp_screenshot.png"):
     # Capture the screenshot and save it to a temporary file
-    subprocess.run(["screencapture", "-x", filename], check=True)
+    safe_command.run(subprocess.run, ["screencapture", "-x", filename], check=True)
 
     # Open the image file with PIL
     with open(filename, "rb") as f:
