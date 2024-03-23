@@ -13,7 +13,7 @@ from .utils.display_markdown_message import display_markdown_message
 def handle_undo(self, arguments):
     """
 
-    :param arguments: 
+    :param arguments:
 
     """
     # Removes all messages after the most recent user entry (and the entry itself).
@@ -54,7 +54,7 @@ def handle_undo(self, arguments):
 def handle_help(self, arguments):
     """
 
-    :param arguments: 
+    :param arguments:
 
     """
     commands_description = {
@@ -114,7 +114,7 @@ def handle_verbose(self, arguments=None):
 def handle_info(self, arguments):
     """
 
-    :param arguments: 
+    :param arguments:
 
     """
     system_info(self)
@@ -123,7 +123,7 @@ def handle_info(self, arguments):
 def handle_reset(self, arguments):
     """
 
-    :param arguments: 
+    :param arguments:
 
     """
     self.reset()
@@ -133,7 +133,7 @@ def handle_reset(self, arguments):
 def default_handle(self, arguments):
     """
 
-    :param arguments: 
+    :param arguments:
 
     """
     display_markdown_message("> Unknown command")
@@ -143,7 +143,7 @@ def default_handle(self, arguments):
 def handle_save_message(self, json_path):
     """
 
-    :param json_path: 
+    :param json_path:
 
     """
     if json_path == "":
@@ -159,7 +159,7 @@ def handle_save_message(self, json_path):
 def handle_load_message(self, json_path):
     """
 
-    :param json_path: 
+    :param json_path:
 
     """
     if json_path == "":
@@ -177,7 +177,7 @@ def handle_load_message(self, json_path):
 def handle_count_tokens(self, prompt):
     """
 
-    :param prompt: 
+    :param prompt:
 
     """
     messages = [{"role": "system", "message": self.system_message}] + self.messages
@@ -235,7 +235,7 @@ def get_downloads_path():
 def install_and_import(package):
     """
 
-    :param package: 
+    :param package:
 
     """
     try:
@@ -271,7 +271,7 @@ def install_and_import(package):
 def jupyter(self, arguments):
     """
 
-    :param arguments: 
+    :param arguments:
 
     """
     # Dynamically install nbformat if not already installed
@@ -317,7 +317,7 @@ def jupyter(self, arguments):
 def handle_magic_command(self, user_input):
     """
 
-    :param user_input: 
+    :param user_input:
 
     """
     # Handle shell

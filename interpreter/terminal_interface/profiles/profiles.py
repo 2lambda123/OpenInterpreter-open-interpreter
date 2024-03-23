@@ -32,8 +32,8 @@ OI_VERSION = "0.2.1"
 def profile(interpreter, filename_or_url):
     """
 
-    :param interpreter: 
-    :param filename_or_url: 
+    :param interpreter:
+    :param filename_or_url:
 
     """
     # See if they're doing shorthand for a default profile
@@ -74,8 +74,8 @@ def profile(interpreter, filename_or_url):
 def get_profile(filename_or_url, profile_path):
     """
 
-    :param filename_or_url: 
-    :param profile_path: 
+    :param filename_or_url:
+    :param profile_path:
 
     """
     # i.com/ is a shortcut for openinterpreter.com/profiles/
@@ -139,7 +139,7 @@ class RemoveInterpreter(ast.NodeTransformer):
     def visit_ImportFrom(self, node):
         """
 
-        :param node: 
+        :param node:
 
         """
         if node.module == "interpreter":
@@ -151,7 +151,7 @@ class RemoveInterpreter(ast.NodeTransformer):
     def visit_Assign(self, node):
         """
 
-        :param node: 
+        :param node:
 
         """
         if (
@@ -168,9 +168,9 @@ class RemoveInterpreter(ast.NodeTransformer):
 def apply_profile(interpreter, profile, profile_path):
     """
 
-    :param interpreter: 
-    :param profile: 
-    :param profile_path: 
+    :param interpreter:
+    :param profile:
+    :param profile_path:
 
     """
     if "start_script" in profile:
@@ -225,8 +225,8 @@ def apply_profile(interpreter, profile, profile_path):
 def migrate_profile(old_path, new_path):
     """
 
-    :param old_path: 
-    :param new_path: 
+    :param old_path:
+    :param new_path:
 
     """
     with open(old_path, "r") as old_file:
@@ -488,7 +488,7 @@ You are capable of **any** task.""",
         def normalize_text(message):
             """
 
-            :param message: 
+            :param message:
 
             """
             return (
@@ -582,8 +582,8 @@ version: {OI_VERSION}  # Profile version (do not modify)
 def apply_profile_to_object(obj, profile):
     """
 
-    :param obj: 
-    :param profile: 
+    :param obj:
+    :param profile:
 
     """
     for key, value in profile.items():
@@ -596,7 +596,7 @@ def apply_profile_to_object(obj, profile):
 def open_storage_dir(directory):
     """
 
-    :param directory: 
+    :param directory:
 
     """
     dir = os.path.join(oi_dir, directory)
@@ -687,7 +687,7 @@ def reset_profile(specific_default_profile=None):
 def get_default_profile(specific_default_profile):
     """
 
-    :param specific_default_profile: 
+    :param specific_default_profile:
 
     """
     for default_yaml_file in default_profiles_paths:
@@ -749,9 +749,9 @@ def determine_user_version():
 def migrate_app_directory(old_dir, new_dir, profile_dir):
     """
 
-    :param old_dir: 
-    :param new_dir: 
-    :param profile_dir: 
+    :param old_dir:
+    :param new_dir:
+    :param profile_dir:
 
     """
     # Copy the "profiles" folder and its contents if it exists

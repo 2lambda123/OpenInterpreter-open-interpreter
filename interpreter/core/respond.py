@@ -12,7 +12,7 @@ def respond(interpreter):
     """Yields chunks.
     Responds until it decides not to run any more code or say anything else.
 
-    :param interpreter: 
+    :param interpreter:
 
     """
 

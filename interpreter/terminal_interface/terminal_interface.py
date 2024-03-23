@@ -47,8 +47,8 @@ except:
 def terminal_interface(interpreter, message):
     """
 
-    :param interpreter: 
-    :param message: 
+    :param interpreter:
+    :param message:
 
     """
     # Auto run and offline (this.. this isnt right) don't display messages.

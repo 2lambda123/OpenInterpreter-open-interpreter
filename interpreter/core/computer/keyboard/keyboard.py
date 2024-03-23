@@ -17,9 +17,9 @@ class Keyboard:
     def write(self, text, interval=None, **kwargs):
         """Type out a string of characters.
 
-        :param text: 
+        :param text:
         :param interval:  (Default value = None)
-        :param **kwargs: 
+        :param **kwargs:
 
         """
         time.sleep(0.15)
@@ -63,7 +63,7 @@ class Keyboard:
     def press(self, *args, presses=1, interval=0.1):
         """
 
-        :param *args: 
+        :param *args:
         :param presses:  (Default value = 1)
         :param interval:  (Default value = 0.1)
 
@@ -82,7 +82,7 @@ class Keyboard:
     def hotkey(self, *args, interval=0.1):
         """Press a sequence of keys in the order they are provided, and then release them in reverse order.
 
-        :param *args: 
+        :param *args:
         :param interval:  (Default value = 0.1)
 
         """
@@ -123,7 +123,7 @@ class Keyboard:
     def down(self, key):
         """Press down a key.
 
-        :param key: 
+        :param key:
 
         """
         time.sleep(0.15)
@@ -133,7 +133,7 @@ class Keyboard:
     def up(self, key):
         """Release a key.
 
-        :param key: 
+        :param key:
 
         """
         time.sleep(0.15)

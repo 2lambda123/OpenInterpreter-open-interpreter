@@ -13,7 +13,7 @@ from .utils.display_markdown_message import display_markdown_message
 def validate_llm_settings(interpreter):
     """Interactively prompt the user for required LLM settings
 
-    :param interpreter: 
+    :param interpreter:
 
     """
 
@@ -44,7 +44,7 @@ def validate_llm_settings(interpreter):
                     To use `GPT-4` (highly recommended) please provide an OpenAI API key.
 
                     To use another language model, consult the documentation at [docs.openinterpreter.com](https://docs.openinterpreter.com/language-model-setup/).
-                    
+
                     ---
                     """
                     )
@@ -55,7 +55,7 @@ def validate_llm_settings(interpreter):
                         """
 
                     **Tip:** To save this key for later, run `export OPENAI_API_KEY=your_api_key` on Mac/Linux or `setx OPENAI_API_KEY your_api_key` on Windows.
-                    
+
                     ---"""
                     )
 
@@ -77,7 +77,7 @@ def validate_llm_settings(interpreter):
 
 def display_welcome_message_once():
     """Displays a welcome message only on its first call.
-    
+
     (Uses an internal attribute `_displayed` to track its state.)
 
 

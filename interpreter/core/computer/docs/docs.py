@@ -15,7 +15,7 @@ class Docs:
     def search(self, query, module=None, paths=None):
         """
 
-        :param query: 
+        :param query:
         :param module:  (Default value = None)
         :param paths:  (Default value = None)
 

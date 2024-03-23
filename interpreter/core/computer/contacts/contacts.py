@@ -11,7 +11,7 @@ class Contacts:
     def get_phone_number(self, contact_name):
         """Returns the phone number of a contact by name.
 
-        :param contact_name: 
+        :param contact_name:
 
         """
         if platform.system() != "Darwin":
@@ -39,7 +39,7 @@ class Contacts:
     def get_email_address(self, contact_name):
         """Returns the email address of a contact by name.
 
-        :param contact_name: 
+        :param contact_name:
 
         """
         if platform.system() != "Darwin":
@@ -67,7 +67,7 @@ class Contacts:
     def get_full_names_from_first_name(self, first_name):
         """Returns a list of full names of contacts that contain the first name provided.
 
-        :param first_name: 
+        :param first_name:
 
         """
         if platform.system() != "Darwin":

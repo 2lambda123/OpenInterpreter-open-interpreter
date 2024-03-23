@@ -13,8 +13,8 @@ class SMS:
     def send(self, to, message):
         """Sends an SMS message to the specified recipient using the Messages app.
 
-        :param to: 
-        :param message: 
+        :param to:
+        :param message:
 
         """
         # Check if the operating system is MacOS, as this functionality is MacOS-specific.
@@ -28,10 +28,10 @@ class SMS:
         escaped_to = to.replace('"', '\\"')
 
         script = f"""
-        tell application "Messages"                                                   
-            set targetBuddy to buddy "{escaped_to}" of service 1                        
-            send "{escaped_message}" to targetBuddy                                
-        end tell 
+        tell application "Messages"
+            set targetBuddy to buddy "{escaped_to}" of service 1
+            send "{escaped_message}" to targetBuddy
+        end tell
         """
         try:
             run_applescript(script)
