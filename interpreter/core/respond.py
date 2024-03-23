@@ -291,8 +291,7 @@ def respond(interpreter):
                         and message["type"] == "message"
                         and combined_messages[-1]["type"] == "message"
                     ):
-                        combined_messages[-1]["content"] += "\n" + \
-                            message["content"]
+                        combined_messages[-1]["content"] += "\n" + message["content"]
                     else:
                         combined_messages.append(message)
                 interpreter.messages = combined_messages
