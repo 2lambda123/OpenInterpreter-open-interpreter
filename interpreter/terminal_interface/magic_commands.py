@@ -41,7 +41,8 @@ def handle_undo(self, arguments):
     for message in removed_messages:
         if "content" in message and message["content"] != None:
             display_markdown_message(
-                f"**Removed message:** `\"{message['content'][:30]}...\"`")
+                f"**Removed message:** `\"{message['content'][:30]}...\"`"
+            )
         elif "function_call" in message:
             display_markdown_message(
                 f"**Removed codeblock**"
@@ -58,17 +59,12 @@ def handle_help(self, arguments):
     """
     commands_description = {
         "%% [commands]": "Run commands in system shell",
-        "%verbose [true/false]":
-        "Toggle verbose mode. Without arguments or with 'true', it enters verbose mode. With 'false', it exits verbose mode.",
+        "%verbose [true/false]": "Toggle verbose mode. Without arguments or with 'true', it enters verbose mode. With 'false', it exits verbose mode.",
         "%reset": "Resets the current session.",
-        "%undo":
-        "Remove previous messages and its response from the message history.",
-        "%save_message [path]":
-        "Saves messages to a specified JSON path. If no path is provided, it defaults to 'messages.json'.",
-        "%load_message [path]":
-        "Loads messages from a specified JSON path. If no path is provided, it defaults to 'messages.json'.",
-        "%tokens [prompt]":
-        "EXPERIMENTAL: Calculate the tokens used by the next request based on the current conversation's messages and estimate the cost of that request; optionally provide a prompt to also calulate the tokens used by that prompt and the total amount of tokens that will be sent with the next request",
+        "%undo": "Remove previous messages and its response from the message history.",
+        "%save_message [path]": "Saves messages to a specified JSON path. If no path is provided, it defaults to 'messages.json'.",
+        "%load_message [path]": "Loads messages from a specified JSON path. If no path is provided, it defaults to 'messages.json'.",
+        "%tokens [prompt]": "EXPERIMENTAL: Calculate the tokens used by the next request based on the current conversation's messages and estimate the cost of that request; optionally provide a prompt to also calulate the tokens used by that prompt and the total amount of tokens that will be sent with the next request",
         "%help": "Show this help message.",
         "%info": "Show system and interpreter information",
         "%jupyter": "Export the conversation to a Jupyter notebook file",
@@ -102,8 +98,9 @@ def handle_verbose(self, arguments=None):
         for message in self.messages:
             message = message.copy()
             if message["type"] == "image" and message.get("format") != "path":
-                message["content"] = (message["content"][:30] + "..." +
-                                      message["content"][-30:])
+                message["content"] = (
+                    message["content"][:30] + "..." + message["content"][-30:]
+                )
             print(message, "\n")
         print("\n")
         self.verbose = True
@@ -156,8 +153,7 @@ def handle_save_message(self, json_path):
     with open(json_path, "w") as f:
         json.dump(self.messages, f, indent=2)
 
-    display_markdown_message(
-        f"> messages json export to {os.path.abspath(json_path)}")
+    display_markdown_message(f"> messages json export to {os.path.abspath(json_path)}")
 
 
 def handle_load_message(self, json_path):
@@ -174,7 +170,8 @@ def handle_load_message(self, json_path):
         self.messages = json.load(f)
 
     display_markdown_message(
-        f"> messages json loaded from {os.path.abspath(json_path)}")
+        f"> messages json loaded from {os.path.abspath(json_path)}"
+    )
 
 
 def handle_count_tokens(self, prompt):
@@ -183,30 +180,29 @@ def handle_count_tokens(self, prompt):
     :param prompt:
 
     """
-    messages = [{
-        "role": "system",
-        "message": self.system_message
-    }] + self.messages
+    messages = [{"role": "system", "message": self.system_message}] + self.messages
 
     outputs = []
 
     if len(self.messages) == 0:
-        (conversation_tokens,
-         conversation_cost) = count_messages_tokens(messages=messages,
-                                                    model=self.llm.model)
+        (conversation_tokens, conversation_cost) = count_messages_tokens(
+            messages=messages, model=self.llm.model
+        )
     else:
-        (conversation_tokens,
-         conversation_cost) = count_messages_tokens(messages=messages,
-                                                    model=self.llm.model)
+        (conversation_tokens, conversation_cost) = count_messages_tokens(
+            messages=messages, model=self.llm.model
+        )
 
-    outputs.append((
-        f"> Tokens sent with next request as context: {conversation_tokens} (Estimated Cost: ${conversation_cost})"
-    ))
+    outputs.append(
+        (
+            f"> Tokens sent with next request as context: {conversation_tokens} (Estimated Cost: ${conversation_cost})"
+        )
+    )
 
     if prompt:
-        (prompt_tokens,
-         prompt_cost) = count_messages_tokens(messages=[prompt],
-                                              model=self.llm.model)
+        (prompt_tokens, prompt_cost) = count_messages_tokens(
+            messages=[prompt], model=self.llm.model
+        )
         outputs.append(
             f"> Tokens used by this prompt: {prompt_tokens} (Estimated Cost: ${prompt_cost})"
         )
@@ -314,7 +310,8 @@ def jupyter(self, arguments):
 
     print("")
     display_markdown_message(
-        f"Jupyter notebook file exported to {os.path.abspath(notebook_path)}")
+        f"Jupyter notebook file exported to {os.path.abspath(notebook_path)}"
+    )
 
 
 def handle_magic_command(self, user_input):
@@ -345,7 +342,7 @@ def handle_magic_command(self, user_input):
 
     user_input = user_input[1:].strip()  # Capture the part after the `%`
     command = user_input.split(" ")[0]
-    arguments = user_input[len(command):].strip()
+    arguments = user_input[len(command) :].strip()
 
     if command == "debug":
         print(

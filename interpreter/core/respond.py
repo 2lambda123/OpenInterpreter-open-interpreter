@@ -36,7 +36,8 @@ def respond(interpreter):
         # Storing the messages so they're accessible in the interpreter's computer
         if interpreter.sync_computer:
             output = interpreter.computer.run(
-                "python", f"messages={interpreter.messages}")
+                "python", f"messages={interpreter.messages}"
+            )
 
         # Rendering ↓
         rendered_system_message = render_message(interpreter, system_message)
@@ -53,11 +54,13 @@ def respond(interpreter):
         messages_for_llm = [rendered_system_message] + messages_for_llm
 
         if insert_force_task_completion_message:
-            messages_for_llm.append({
-                "role": "user",
-                "type": "message",
-                "content": force_task_completion_message,
-            })
+            messages_for_llm.append(
+                {
+                    "role": "user",
+                    "type": "message",
+                    "content": force_task_completion_message,
+                }
+            )
             # Yield two newlines to seperate the LLMs reply from previous messages.
             yield {"role": "assistant", "type": "message", "content": "\n\n"}
             insert_force_task_completion_message = False
@@ -69,25 +72,29 @@ def respond(interpreter):
                 yield {"role": "assistant", **chunk}
 
         except litellm.exceptions.BudgetExceededError:
-            display_markdown_message(f"""> Max budget exceeded
+            display_markdown_message(
+                f"""> Max budget exceeded
 
                 **Session spend:** ${litellm._current_cost}
                 **Max budget:** ${interpreter.max_budget}
 
                 Press CTRL-C then run `interpreter --max_budget [higher USD amount]` to proceed.
-            """)
+            """
+            )
             break
         # Provide extra information on how to change API keys, if we encounter that error
         # (Many people writing GitHub issues were struggling with this)
         except Exception as e:
-            if (interpreter.offline == False and "auth" in str(e).lower()
-                    or "api key" in str(e).lower()):
+            if (
+                interpreter.offline == False
+                and "auth" in str(e).lower()
+                or "api key" in str(e).lower()
+            ):
                 output = traceback.format_exc()
                 raise Exception(
                     f"{output}\n\nThere might be an issue with your API key(s).\n\nTo reset your API key (we'll use OPENAI_API_KEY for this example, but you may need to reset your ANTHROPIC_API_KEY, HUGGINGFACE_API_KEY, etc):\n        Mac/Linux: 'export OPENAI_API_KEY=your-key-here',\n        Windows: 'setx OPENAI_API_KEY your-key-here' then restart terminal.\n\n"
                 )
-            elif interpreter.offline == False and "not have access" in str(
-                    e).lower():
+            elif interpreter.offline == False and "not have access" in str(e).lower():
                 response = input(
                     f"  You do not have access to {interpreter.llm.model}. You will need to add a payment method and purchase credits for the OpenAI API billing page (different from ChatGPT) to use `GPT-4`.\n\nhttps://platform.openai.com/account/billing/overview\n\nWould you like to try GPT-3.5-TURBO instead? (y/n)\n\n  "
                 )
@@ -99,7 +106,8 @@ def respond(interpreter):
                     interpreter.llm.max_tokens = 4096
                     interpreter.llm.supports_functions = True
                     display_markdown_message(
-                        f"> Model set to `{interpreter.llm.model}`")
+                        f"> Model set to `{interpreter.llm.model}`"
+                    )
                 else:
                     raise Exception(
                         "\n\nYou will need to add a payment method and purchase credits for the OpenAI API billing page (different from ChatGPT) to use GPT-4.\n\nhttps://platform.openai.com/account/billing/overview"
@@ -127,8 +135,7 @@ def respond(interpreter):
                     continue
 
                 # Is this language enabled/supported?
-                if interpreter.computer.terminal.get_language(
-                        language) == None:
+                if interpreter.computer.terminal.get_language(language) == None:
                     output = f"`{language}` disabled or not supported."
 
                     yield {
@@ -165,22 +172,24 @@ def respond(interpreter):
                 # don't let it import computer — we handle that!
                 if interpreter.computer.import_computer_api and language == "python":
                     code = code.replace("import computer\n", "pass\n")
-                    code = re.sub(r"import computer\.(\w+) as (\w+)",
-                                  r"\2 = computer.\1", code)
+                    code = re.sub(
+                        r"import computer\.(\w+) as (\w+)", r"\2 = computer.\1", code
+                    )
                     code = re.sub(
                         r"from computer import (.+)",
                         lambda m: "\n".join(
                             f"{x.strip()} = computer.{x.strip()}"
-                            for x in m.group(1).split(", ")),
+                            for x in m.group(1).split(", ")
+                        ),
                         code,
                     )
                     code = re.sub(r"import computer\.\w+\n", "pass\n", code)
                     # If it does this it sees the screenshot twice (which is expected jupyter behavior)
                     if code.split("\n")[-1] in [
-                            "computer.display.view()",
-                            "computer.display.screenshot()",
-                            "computer.view()",
-                            "computer.screenshot()",
+                        "computer.display.view()",
+                        "computer.display.screenshot()",
+                        "computer.view()",
+                        "computer.screenshot()",
                     ]:
                         code = code + "\npass"
 
@@ -207,9 +216,7 @@ def respond(interpreter):
 
                 # ↓ CODE IS RUN HERE
 
-                for line in interpreter.computer.run(language,
-                                                     code,
-                                                     stream=True):
+                for line in interpreter.computer.run(language, code, stream=True):
                     yield {"role": "computer", **line}
 
                 # ↑ CODE IS RUN HERE
@@ -224,7 +231,8 @@ def respond(interpreter):
                         )
                         result = result[-1]["content"]
                         interpreter.computer.load_dict(
-                            json.loads(result.strip('"').strip("'")))
+                            json.loads(result.strip('"').strip("'"))
+                        )
                 except Exception as e:
                     if interpreter.debug:
                         raise
@@ -260,27 +268,32 @@ def respond(interpreter):
                 )
             force_task_completion_breakers = interpreter.force_task_completion_breakers
 
-            if (interpreter.force_task_completion
-                    and interpreter.messages and interpreter.messages[-1].get(
-                        "role", "").lower() == "assistant"
-                    and not any(
-                        task_status in interpreter.messages[-1].get(
-                            "content", "")
-                        for task_status in force_task_completion_breakers)):
+            if (
+                interpreter.force_task_completion
+                and interpreter.messages
+                and interpreter.messages[-1].get("role", "").lower() == "assistant"
+                and not any(
+                    task_status in interpreter.messages[-1].get("content", "")
+                    for task_status in force_task_completion_breakers
+                )
+            ):
                 # Remove past force_task_completion_message messages
                 interpreter.messages = [
-                    message for message in interpreter.messages if message.get(
-                        "content", "") != force_task_completion_message
+                    message
+                    for message in interpreter.messages
+                    if message.get("content", "") != force_task_completion_message
                 ]
                 # Combine adjacent assistant messages, so hopefully it learns to just keep going!
                 combined_messages = []
                 for message in interpreter.messages:
-                    if (combined_messages and message["role"] == "assistant"
-                            and combined_messages[-1]["role"] == "assistant"
-                            and message["type"] == "message"
-                            and combined_messages[-1]["type"] == "message"):
-                        combined_messages[-1][
-                            "content"] += "\n" + message["content"]
+                    if (
+                        combined_messages
+                        and message["role"] == "assistant"
+                        and combined_messages[-1]["role"] == "assistant"
+                        and message["type"] == "message"
+                        and combined_messages[-1]["type"] == "message"
+                    ):
+                        combined_messages[-1]["content"] += "\n" + message["content"]
                     else:
                         combined_messages.append(message)
                 interpreter.messages = combined_messages

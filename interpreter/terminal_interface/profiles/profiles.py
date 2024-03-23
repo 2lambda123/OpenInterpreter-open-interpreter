@@ -23,9 +23,7 @@ user_default_profile_path = os.path.join(profile_dir, "default.yaml")
 here = os.path.abspath(os.path.dirname(__file__))
 oi_default_profiles_path = os.path.join(here, "defaults")
 default_profiles_paths = glob.glob(os.path.join(oi_default_profiles_path, "*"))
-default_profiles_names = [
-    os.path.basename(path) for path in default_profiles_paths
-]
+default_profiles_names = [os.path.basename(path) for path in default_profiles_paths]
 
 # Constant to hold the version number
 OI_VERSION = "0.2.1"
@@ -50,8 +48,10 @@ def profile(interpreter, filename_or_url):
 
     # If they have a profile at a reserved profile name, rename it to {name}_custom.
     # Don't do this for the default one though.
-    if (filename_or_url not in ["default", "default.yaml"]
-            and filename_or_url in default_profiles_names):
+    if (
+        filename_or_url not in ["default", "default.yaml"]
+        and filename_or_url in default_profiles_names
+    ):
         if os.path.isfile(profile_path):
             base, extension = os.path.splitext(profile_path)
             os.rename(profile_path, f"{base}_custom{extension}")
@@ -83,7 +83,8 @@ def get_profile(filename_or_url, profile_path):
     for shortcut in shortcuts:
         if filename_or_url.startswith(shortcut):
             filename_or_url = filename_or_url.replace(
-                shortcut, "https://openinterpreter.com/profiles/")
+                shortcut, "https://openinterpreter.com/profiles/"
+            )
             if "." not in filename_or_url.split("/")[-1]:
                 extensions = [".json", ".py", ".yaml"]
                 for ext in extensions:
@@ -153,11 +154,13 @@ class RemoveInterpreter(ast.NodeTransformer):
         :param node:
 
         """
-        if (isinstance(node.targets[0], ast.Name)
-                and node.targets[0].id == "interpreter"
-                and isinstance(node.value, ast.Call)
-                and isinstance(node.value.func, ast.Name)
-                and node.value.func.id == "OpenInterpreter"):
+        if (
+            isinstance(node.targets[0], ast.Name)
+            and node.targets[0].id == "interpreter"
+            and isinstance(node.value, ast.Call)
+            and isinstance(node.value.func, ast.Name)
+            and node.value.func.id == "OpenInterpreter"
+        ):
             return None  # None will remove the node from the AST
         return node  # return node otherwise to keep it in the AST
 
@@ -173,8 +176,9 @@ def apply_profile(interpreter, profile, profile_path):
     if "start_script" in profile:
         exec(profile["start_script"])
 
-    if ("version" not in profile or profile["version"] != OI_VERSION
-        ):  # Remember to update this version number at the top of the file ^
+    if (
+        "version" not in profile or profile["version"] != OI_VERSION
+    ):  # Remember to update this version number at the top of the file ^
         print("")
         print(
             "We have updated our profile file format. Would you like to migrate your profile file to the new format? No data will be lost."
@@ -207,8 +211,9 @@ def apply_profile(interpreter, profile, profile_path):
     if "computer" in profile and "languages" in profile["computer"]:
         # this is handled specially
         interpreter.computer.languages = [
-            i for i in interpreter.computer.languages if i.name.lower() in
-            [l.lower() for l in profile["computer"]["languages"]]
+            i
+            for i in interpreter.computer.languages
+            if i.name.lower() in [l.lower() for l in profile["computer"]["languages"]]
         ]
         del profile["computer.languages"]
 
@@ -269,10 +274,7 @@ def migrate_profile(old_path, new_path):
 
     # Save profile file with initial data
     with open(new_path, "w") as file:
-        yaml.dump(reformatted_profile,
-                  file,
-                  default_flow_style=False,
-                  sort_keys=False)
+        yaml.dump(reformatted_profile, file, default_flow_style=False, sort_keys=False)
 
     old_system_messages = [
         """You are Open Interpreter, a world-class programmer that can complete any goal by executing code.
@@ -489,9 +491,13 @@ You are capable of **any** task.""",
             :param message:
 
             """
-            return (message.replace("\n", "").replace(
-                " ", "").lower().translate(
-                    str.maketrans("", "", string.punctuation)).strip())
+            return (
+                message.replace("\n", "")
+                .replace(" ", "")
+                .lower()
+                .translate(str.maketrans("", "", string.punctuation))
+                .strip()
+            )
 
         normalized_system_message = normalize_text(profile["system_message"])
         normalized_old_system_messages = [
@@ -507,7 +513,8 @@ You are capable of **any** task.""",
                 if profile["system_message"].strip().startswith(old_message):
                     # Extract the ending part and make it into custom_instructions
                     profile["custom_instructions"] = profile["system_message"][
-                        len(old_message):].strip()
+                        len(old_message) :
+                    ].strip()
                     del profile["system_message"]
                     break
 
@@ -549,18 +556,21 @@ version: {OI_VERSION}  # Profile version (do not modify)
 
     # Remove all lines that start with a # comment from the old profile, and old version numbers
     old_profile_lines = old_profile.split("\n")
-    old_profile = "\n".join([
-        line for line in old_profile_lines if not line.strip().startswith("#")
-    ])
-    old_profile = "\n".join([
-        line for line in old_profile.split("\n")
-        if not line.strip().startswith("version:")
-    ])
+    old_profile = "\n".join(
+        [line for line in old_profile_lines if not line.strip().startswith("#")]
+    )
+    old_profile = "\n".join(
+        [
+            line
+            for line in old_profile.split("\n")
+            if not line.strip().startswith("version:")
+        ]
+    )
 
     # Replace {old_profile} in comment_wrapper with the modified current profile, and add the version
-    comment_wrapper = comment_wrapper.replace("{old_profile}",
-                                              old_profile).replace(
-                                                  "{OI_VERSION}", OI_VERSION)
+    comment_wrapper = comment_wrapper.replace("{old_profile}", old_profile).replace(
+        "{OI_VERSION}", OI_VERSION
+    )
     # Sometimes this happens if profile ended up empty
     comment_wrapper.replace("\n{}\n", "\n")
 
@@ -611,8 +621,10 @@ def reset_profile(specific_default_profile=None):
     :param specific_default_profile:  (Default value = None)
 
     """
-    if (specific_default_profile
-            and specific_default_profile not in default_profiles_names):
+    if (
+        specific_default_profile
+        and specific_default_profile not in default_profiles_names
+    ):
         raise ValueError(
             f"The specific default profile '{specific_default_profile}' is not a default profile."
         )
@@ -657,7 +669,8 @@ def reset_profile(specific_default_profile=None):
                 current_profile = file.read()
             if current_profile not in historical_profiles:
                 user_input = input(
-                    f"Would you like to reset/update {filename}? (y/n): ")
+                    f"Would you like to reset/update {filename}? (y/n): "
+                )
                 if user_input.lower() == "y":
                     send2trash.send2trash(
                         target_file
@@ -721,8 +734,9 @@ def determine_user_version():
                 if "version" in default_profile:
                     return default_profile["version"]
 
-    if os.path.exists(old_dir_020) or (os.path.exists(old_dir_pre_020)
-                                       and os.path.exists(old_dir_020)):
+    if os.path.exists(old_dir_020) or (
+        os.path.exists(old_dir_pre_020) and os.path.exists(old_dir_020)
+    ):
         # If both old_dir_pre_020 and old_dir_020 are found, or just old_dir_020, return 0.2.0
         return "0.2.0"
     if os.path.exists(old_dir_pre_020):
@@ -761,9 +775,9 @@ def migrate_app_directory(old_dir, new_dir, profile_dir):
     conversations_old_path = os.path.join(old_dir, "conversations")
     conversations_new_path = os.path.join(new_dir, "conversations")
     if os.path.exists(conversations_old_path):
-        shutil.copytree(conversations_old_path,
-                        conversations_new_path,
-                        dirs_exist_ok=True)
+        shutil.copytree(
+            conversations_old_path, conversations_new_path, dirs_exist_ok=True
+        )
 
     # Migrate the "config.yaml" file to the new format
     config_old_path = os.path.join(old_dir, "config.yaml")
@@ -779,13 +793,11 @@ def migrate_app_directory(old_dir, new_dir, profile_dir):
                 lines = file.readlines()
 
             # Check if a version line already exists
-            version_exists = any(line.strip().startswith("version:")
-                                 for line in lines)
+            version_exists = any(line.strip().startswith("version:") for line in lines)
 
             if not version_exists:
                 with open(file_path, "a") as file:  # Open for appending
-                    file.write(
-                        "\nversion: 0.2.1  # Profile version (do not modify)")
+                    file.write("\nversion: 0.2.1  # Profile version (do not modify)")
 
 
 def migrate_user_app_directory():
