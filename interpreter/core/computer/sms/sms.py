@@ -5,13 +5,17 @@ from ..utils.run_applescript import run_applescript
 
 
 class SMS:
+    """ """
     def __init__(self, computer):
         self.computer = computer
         self.messages_app = "Messages"
 
     def send(self, to, message):
-        """
-        Sends an SMS message to the specified recipient using the Messages app.
+        """Sends an SMS message to the specified recipient using the Messages app.
+
+        :param to: 
+        :param message: 
+
         """
         # Check if the operating system is MacOS, as this functionality is MacOS-specific.
         if platform.system() != "Darwin":

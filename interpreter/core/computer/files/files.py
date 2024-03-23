@@ -7,18 +7,26 @@ aifs = lazy_import("aifs")
 
 
 class Files:
+    """ """
     def __init__(self, computer):
         self.computer = computer
 
     def search(self, *args, **kwargs):
-        """
-        Search the filesystem for the given query.
+        """Search the filesystem for the given query.
+
+        :param *args: 
+        :param **kwargs: 
+
         """
         return aifs.search(*args, **kwargs)
 
     def edit(self, path, original_text, replacement_text):
-        """
-        Edits a file on the filesystem, replacing the original text with the replacement text.
+        """Edits a file on the filesystem, replacing the original text with the replacement text.
+
+        :param path: 
+        :param original_text: 
+        :param replacement_text: 
+
         """
         with open(path, "r") as file:
             filedata = file.read()
@@ -38,8 +46,12 @@ class Files:
 
 
 def get_close_matches_in_text(original_text, filedata, n=3):
-    """
-    Returns the closest matches to the original text in the content of the file.
+    """Returns the closest matches to the original text in the content of the file.
+
+    :param original_text: 
+    :param filedata: 
+    :param n:  (Default value = 3)
+
     """
     words = filedata.split()
     original_words = original_text.split()

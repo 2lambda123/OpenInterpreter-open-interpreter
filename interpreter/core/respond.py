@@ -9,9 +9,11 @@ from .render_message import render_message
 
 
 def respond(interpreter):
-    """
-    Yields chunks.
+    """Yields chunks.
     Responds until it decides not to run any more code or say anything else.
+
+    :param interpreter: 
+
     """
 
     last_unsupported_code = ""

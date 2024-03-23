@@ -12,8 +12,10 @@ from .utils.display_markdown_message import display_markdown_message
 
 
 def validate_llm_settings(interpreter):
-    """
-    Interactively prompt the user for required LLM settings
+    """Interactively prompt the user for required LLM settings
+
+    :param interpreter: 
+
     """
 
     # This runs in a while loop so `continue` lets us start from the top
@@ -75,10 +77,11 @@ def validate_llm_settings(interpreter):
 
 
 def display_welcome_message_once():
-    """
-    Displays a welcome message only on its first call.
-
+    """Displays a welcome message only on its first call.
+    
     (Uses an internal attribute `_displayed` to track its state.)
+
+
     """
     if not hasattr(display_welcome_message_once, "_displayed"):
         display_markdown_message(

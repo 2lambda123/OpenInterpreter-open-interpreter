@@ -8,10 +8,18 @@ aifs = lazy_import("aifs")
 
 
 class Docs:
+    """ """
     def __init__(self, computer):
         self.computer = computer
 
     def search(self, query, module=None, paths=None):
+        """
+
+        :param query: 
+        :param module:  (Default value = None)
+        :param paths:  (Default value = None)
+
+        """
         if paths:
             return aifs.search(query, file_paths=paths, python_docstrings_only=True)
 

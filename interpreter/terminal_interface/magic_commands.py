@@ -11,6 +11,11 @@ from .utils.display_markdown_message import display_markdown_message
 
 
 def handle_undo(self, arguments):
+    """
+
+    :param arguments: 
+
+    """
     # Removes all messages after the most recent user entry (and the entry itself).
     # Therefore user can jump back to the latest point of conversation.
     # Also gives a visual representation of the messages removed.
@@ -47,6 +52,11 @@ def handle_undo(self, arguments):
 
 
 def handle_help(self, arguments):
+    """
+
+    :param arguments: 
+
+    """
     commands_description = {
         "%% [commands]": "Run commands in system shell",
         "%verbose [true/false]": "Toggle verbose mode. Without arguments or with 'true', it enters verbose mode. With 'false', it exits verbose mode.",
@@ -77,6 +87,11 @@ def handle_help(self, arguments):
 
 
 def handle_verbose(self, arguments=None):
+    """
+
+    :param arguments:  (Default value = None)
+
+    """
     if arguments == "" or arguments == "true":
         display_markdown_message("> Entered verbose mode")
         print("\n\nCurrent messages:\n")
@@ -97,20 +112,40 @@ def handle_verbose(self, arguments=None):
 
 
 def handle_info(self, arguments):
+    """
+
+    :param arguments: 
+
+    """
     system_info(self)
 
 
 def handle_reset(self, arguments):
+    """
+
+    :param arguments: 
+
+    """
     self.reset()
     display_markdown_message("> Reset Done")
 
 
 def default_handle(self, arguments):
+    """
+
+    :param arguments: 
+
+    """
     display_markdown_message("> Unknown command")
     handle_help(self, arguments)
 
 
 def handle_save_message(self, json_path):
+    """
+
+    :param json_path: 
+
+    """
     if json_path == "":
         json_path = "messages.json"
     if not json_path.endswith(".json"):
@@ -122,6 +157,11 @@ def handle_save_message(self, json_path):
 
 
 def handle_load_message(self, json_path):
+    """
+
+    :param json_path: 
+
+    """
     if json_path == "":
         json_path = "messages.json"
     if not json_path.endswith(".json"):
@@ -135,6 +175,11 @@ def handle_load_message(self, json_path):
 
 
 def handle_count_tokens(self, prompt):
+    """
+
+    :param prompt: 
+
+    """
     messages = [{"role": "system", "message": self.system_message}] + self.messages
 
     outputs = []
@@ -177,6 +222,7 @@ def handle_count_tokens(self, prompt):
 
 
 def get_downloads_path():
+    """ """
     if os.name == "nt":
         # For Windows
         downloads = os.path.join(os.environ["USERPROFILE"], "Downloads")
@@ -187,6 +233,11 @@ def get_downloads_path():
 
 
 def install_and_import(package):
+    """
+
+    :param package: 
+
+    """
     try:
         module = __import__(package)
     except ImportError:
@@ -218,6 +269,11 @@ def install_and_import(package):
 
 
 def jupyter(self, arguments):
+    """
+
+    :param arguments: 
+
+    """
     # Dynamically install nbformat if not already installed
     nbformat = install_and_import("nbformat")
     from nbformat.v4 import new_code_cell, new_markdown_cell, new_notebook
@@ -259,6 +315,11 @@ def jupyter(self, arguments):
 
 
 def handle_magic_command(self, user_input):
+    """
+
+    :param user_input: 
+
+    """
     # Handle shell
     if user_input.startswith("%%"):
         code = user_input[2:].strip()

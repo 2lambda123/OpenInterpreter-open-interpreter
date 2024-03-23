@@ -7,6 +7,7 @@ pyperclip = lazy_import("pyperclip")
 
 
 class Clipboard:
+    """ """
     def __init__(self, computer):
         self.computer = computer
 
@@ -16,14 +17,14 @@ class Clipboard:
             self.modifier_key = "command"
 
     def view(self):
-        """
-        Returns the current content of on the clipboard.
-        """
+        """Returns the current content of on the clipboard."""
         return pyperclip.paste()
 
     def copy(self, text=None):
-        """
-        Copies the given text to the clipboard.
+        """Copies the given text to the clipboard.
+
+        :param text:  (Default value = None)
+
         """
         if text is not None:
             pyperclip.copy(text)
@@ -31,7 +32,5 @@ class Clipboard:
             self.computer.keyboard.hotkey(self.modifier_key, "c")
 
     def paste(self):
-        """
-        Pastes the current content of the clipboard.
-        """
+        """Pastes the current content of the clipboard."""
         self.computer.keyboard.hotkey(self.modifier_key, "v")

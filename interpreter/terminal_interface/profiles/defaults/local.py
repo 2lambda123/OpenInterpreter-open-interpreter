@@ -10,6 +10,13 @@ from interpreter import interpreter
 
 
 def download_model(models_dir, models, interpreter):
+    """
+
+    :param models_dir: 
+    :param models: 
+    :param interpreter: 
+
+    """
     # For some reason, these imports need to be inside the function
     import inquirer
     import psutil

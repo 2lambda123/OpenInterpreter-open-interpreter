@@ -15,8 +15,12 @@ class Keyboard:
         self.computer = computer
 
     def write(self, text, interval=None, **kwargs):
-        """
-        Type out a string of characters.
+        """Type out a string of characters.
+
+        :param text: 
+        :param interval:  (Default value = None)
+        :param **kwargs: 
+
         """
         time.sleep(0.15)
 
@@ -57,6 +61,13 @@ class Keyboard:
         time.sleep(0.15)
 
     def press(self, *args, presses=1, interval=0.1):
+        """
+
+        :param *args: 
+        :param presses:  (Default value = 1)
+        :param interval:  (Default value = 0.1)
+
+        """
         keys = args
         """
         Press a key or a sequence of keys.
@@ -69,8 +80,11 @@ class Keyboard:
         time.sleep(0.15)
 
     def hotkey(self, *args, interval=0.1):
-        """
-        Press a sequence of keys in the order they are provided, and then release them in reverse order.
+        """Press a sequence of keys in the order they are provided, and then release them in reverse order.
+
+        :param *args: 
+        :param interval:  (Default value = 0.1)
+
         """
         time.sleep(0.15)
         modifiers = ["command", "option", "alt", "ctrl", "shift"]
@@ -107,16 +121,20 @@ class Keyboard:
         time.sleep(0.15)
 
     def down(self, key):
-        """
-        Press down a key.
+        """Press down a key.
+
+        :param key: 
+
         """
         time.sleep(0.15)
         pyautogui.keyDown(key)
         time.sleep(0.15)
 
     def up(self, key):
-        """
-        Release a key.
+        """Release a key.
+
+        :param key: 
+
         """
         time.sleep(0.15)
         pyautogui.keyUp(key)
