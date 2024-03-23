@@ -23,7 +23,8 @@ user_default_profile_path = os.path.join(profile_dir, "default.yaml")
 here = os.path.abspath(os.path.dirname(__file__))
 oi_default_profiles_path = os.path.join(here, "defaults")
 default_profiles_paths = glob.glob(os.path.join(oi_default_profiles_path, "*"))
-default_profiles_names = [os.path.basename(path) for path in default_profiles_paths]
+default_profiles_names = [os.path.basename(
+    path) for path in default_profiles_paths]
 
 # Constant to hold the version number
 OI_VERSION = "0.2.1"
@@ -239,7 +240,8 @@ def migrate_profile(old_path, new_path):
 
     # Save profile file with initial data
     with open(new_path, "w") as file:
-        yaml.dump(reformatted_profile, file, default_flow_style=False, sort_keys=False)
+        yaml.dump(reformatted_profile, file,
+                  default_flow_style=False, sort_keys=False)
 
     old_system_messages = [
         """You are Open Interpreter, a world-class programmer that can complete any goal by executing code.
@@ -473,7 +475,7 @@ You are capable of **any** task.""",
                 if profile["system_message"].strip().startswith(old_message):
                     # Extract the ending part and make it into custom_instructions
                     profile["custom_instructions"] = profile["system_message"][
-                        len(old_message) :
+                        len(old_message):
                     ].strip()
                     del profile["system_message"]
                     break
@@ -724,11 +726,13 @@ def migrate_app_directory(old_dir, new_dir, profile_dir):
                 lines = file.readlines()
 
             # Check if a version line already exists
-            version_exists = any(line.strip().startswith("version:") for line in lines)
+            version_exists = any(line.strip().startswith("version:")
+                                 for line in lines)
 
             if not version_exists:
                 with open(file_path, "a") as file:  # Open for appending
-                    file.write("\nversion: 0.2.1  # Profile version (do not modify)")
+                    file.write(
+                        "\nversion: 0.2.1  # Profile version (do not modify)")
 
 
 def migrate_user_app_directory():

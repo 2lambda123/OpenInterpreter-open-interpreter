@@ -22,5 +22,6 @@ class Docs:
         module_path = os.path.dirname(inspect.getfile(module.__class__))
 
         # Use aifs to search over the files in the module path
-        results = aifs.search(query, path=module_path, python_docstrings_only=True)
+        results = aifs.search(query, path=module_path,
+                              python_docstrings_only=True)
         return results

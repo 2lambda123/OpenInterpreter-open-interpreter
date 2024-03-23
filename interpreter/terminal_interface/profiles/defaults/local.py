@@ -148,7 +148,8 @@ def download_model(models_dir, models, interpreter):
             if platform.system() != "Windows":
                 subprocess.run(["chmod", "+x", model_path], check=True)
 
-            print(f"\nModel '{selected_model['name']}' downloaded successfully.\n")
+            print(
+                f"\nModel '{selected_model['name']}' downloaded successfully.\n")
 
             interpreter.display_message(
                 "To view or delete downloaded local models, run `interpreter --local_models`\n\n"
@@ -257,7 +258,8 @@ elif selected_model == "Ollama":
 
             # Set the model to the selected model
             interpreter.llm.model = f"ollama/{selected_name}"
-            interpreter.display_message(f"\nUsing Ollama model: `{selected_name}` \n")
+            interpreter.display_message(
+                f"\nUsing Ollama model: `{selected_name}` \n")
             time.sleep(1)
 
     # If Ollama is not installed or not recognized as a command, prompt the user to download Ollama and try again
@@ -352,7 +354,8 @@ elif selected_model == "Llamafile":
             try:
                 # Run the selected model and hide its output
                 process = subprocess.Popen(
-                    f'"{model_path}" ' + " ".join(["--nobrowser", "-ngl", "9999"]),
+                    f'"{model_path}" ' +
+                    " ".join(["--nobrowser", "-ngl", "9999"]),
                     shell=True,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,

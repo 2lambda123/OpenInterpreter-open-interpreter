@@ -37,9 +37,9 @@ def respond(interpreter):
                 "python", f"messages={interpreter.messages}"
             )
 
-        ## Rendering ↓
+        # Rendering ↓
         rendered_system_message = render_message(interpreter, system_message)
-        ## Rendering ↑
+        # Rendering ↑
 
         rendered_system_message = {
             "role": "system",
@@ -212,12 +212,12 @@ def respond(interpreter):
                     print(str(e))
                     print("Continuing...")
 
-                ## ↓ CODE IS RUN HERE
+                # ↓ CODE IS RUN HERE
 
                 for line in interpreter.computer.run(language, code, stream=True):
                     yield {"role": "computer", **line}
 
-                ## ↑ CODE IS RUN HERE
+                # ↑ CODE IS RUN HERE
 
                 # sync up your computer with the interpreter's computer
                 try:
@@ -255,7 +255,7 @@ def respond(interpreter):
                 }
 
         else:
-            ## LOOP MESSAGE
+            # LOOP MESSAGE
             # This makes it utter specific phrases if it doesn't want to be told to "Proceed."
 
             force_task_completion_message = interpreter.force_task_completion_message
@@ -291,7 +291,8 @@ def respond(interpreter):
                         and message["type"] == "message"
                         and combined_messages[-1]["type"] == "message"
                     ):
-                        combined_messages[-1]["content"] += "\n" + message["content"]
+                        combined_messages[-1]["content"] += "\n" + \
+                            message["content"]
                     else:
                         combined_messages.append(message)
                 interpreter.messages = combined_messages

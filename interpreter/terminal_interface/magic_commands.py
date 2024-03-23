@@ -118,7 +118,8 @@ def handle_save_message(self, json_path):
     with open(json_path, "w") as f:
         json.dump(self.messages, f, indent=2)
 
-    display_markdown_message(f"> messages json export to {os.path.abspath(json_path)}")
+    display_markdown_message(
+        f"> messages json export to {os.path.abspath(json_path)}")
 
 
 def handle_load_message(self, json_path):
@@ -135,7 +136,8 @@ def handle_load_message(self, json_path):
 
 
 def handle_count_tokens(self, prompt):
-    messages = [{"role": "system", "message": self.system_message}] + self.messages
+    messages = [
+        {"role": "system", "message": self.system_message}] + self.messages
 
     outputs = []
 
@@ -281,7 +283,7 @@ def handle_magic_command(self, user_input):
 
     user_input = user_input[1:].strip()  # Capture the part after the `%`
     command = user_input.split(" ")[0]
-    arguments = user_input[len(command) :].strip()
+    arguments = user_input[len(command):].strip()
 
     if command == "debug":
         print(

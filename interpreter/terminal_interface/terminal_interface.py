@@ -58,7 +58,8 @@ def terminal_interface(interpreter, message):
                     f"**Safe Mode**: {interpreter.safe_mode}\n\n>Note: **Safe Mode** requires `semgrep` (`pip install semgrep`)"
                 )
         else:
-            interpreter_intro_message.append("Use `interpreter -y` to bypass this.")
+            interpreter_intro_message.append(
+                "Use `interpreter -y` to bypass this.")
 
         interpreter_intro_message.append("Press `CTRL-C` to exit.")
 
@@ -75,7 +76,7 @@ def terminal_interface(interpreter, message):
     while True:
         try:
             if interactive:
-                ### This is the primary input for Open Interpreter.
+                # This is the primary input for Open Interpreter.
                 message = (
                     cli_input("> ").strip()
                     if interpreter.multi_line
@@ -117,7 +118,7 @@ def terminal_interface(interpreter, message):
                 # Is the input a path to an image? Like they just dragged it into the terminal?
                 image_path = find_image_path(message)
 
-                ## If we found an image, add it to the message
+                # If we found an image, add it to the message
                 if image_path:
                     # Add the text interpreter's messsage history
                     interpreter.messages.append(
@@ -154,7 +155,8 @@ def terminal_interface(interpreter, message):
                         chunk.get("format") == "output"
                         and "failsafeexception" in chunk["content"].lower()
                     ):
-                        print("Fail-safe triggered (mouse in one of the four corners).")
+                        print(
+                            "Fail-safe triggered (mouse in one of the four corners).")
                         break
 
                 if "end" in chunk and active_block:
@@ -354,7 +356,8 @@ def terminal_interface(interpreter, message):
 
                             code_lines = active_block.code.split("\n")
                             if active_block.active_line < len(code_lines):
-                                action = code_lines[active_block.active_line].strip()
+                                action = code_lines[active_block.active_line].strip(
+                                )
 
                             if action.startswith("computer"):
                                 description = None
@@ -364,7 +367,8 @@ def terminal_interface(interpreter, message):
                                 end_index = action.rfind(")")
                                 if start_index != -1 and end_index != -1:
                                     # (If we found both)
-                                    arguments = action[start_index + 1 : end_index]
+                                    arguments = action[start_index +
+                                                       1: end_index]
                                 else:
                                     arguments = None
 
