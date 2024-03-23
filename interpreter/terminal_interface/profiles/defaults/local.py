@@ -5,6 +5,7 @@ import sys
 import time
 
 import inquirer
+from security import safe_command
 
 from interpreter import interpreter
 
@@ -146,7 +147,9 @@ def download_model(models_dir, models, interpreter):
 
             # Make the model executable if not on Windows
             if platform.system() != "Windows":
-                subprocess.run(["chmod", "+x", model_path], check=True)
+                safe_command.run(
+                    subprocess.run, ["chmod", "+x", model_path], check=True
+                )
 
             print(f"\nModel '{selected_model['name']}' downloaded successfully.\n")
 
@@ -219,8 +222,12 @@ Once the server is running, you can begin your conversation below.
 elif selected_model == "Ollama":
     try:
         # List out all downloaded ollama models. Will fail if ollama isn't installed
-        result = subprocess.run(
-            ["ollama", "list"], capture_output=True, text=True, check=True
+        result = safe_command.run(
+            subprocess.run,
+            ["ollama", "list"],
+            capture_output=True,
+            text=True,
+            check=True,
         )
         lines = result.stdout.split("\n")
         names = [
@@ -306,8 +313,11 @@ Once the server is running, enter the id of the model below, then you can begin 
 
 elif selected_model == "Llamafile":
     if platform.system() == "Darwin":  # Check if the system is MacOS
-        result = subprocess.run(
-            ["xcode-select", "-p"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        result = safe_command.run(
+            subprocess.run,
+            ["xcode-select", "-p"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
         )
         if result.returncode != 0:
             interpreter.display_message(
@@ -351,7 +361,8 @@ elif selected_model == "Llamafile":
         if model_path:
             try:
                 # Run the selected model and hide its output
-                process = subprocess.Popen(
+                process = safe_command.run(
+                    subprocess.Popen,
                     f'"{model_path}" ' + " ".join(["--nobrowser", "-ngl", "9999"]),
                     shell=True,
                     stdout=subprocess.PIPE,

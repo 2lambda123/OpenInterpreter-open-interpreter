@@ -1,6 +1,7 @@
 import hashlib
 import io
 import os
+import secrets
 import subprocess
 from typing import List
 
@@ -9,6 +10,7 @@ import nltk
 import numpy as np
 import torch
 from PIL import Image, ImageDraw, ImageEnhance, ImageFont
+from security import safe_command
 from sentence_transformers import SentenceTransformer, util
 
 from .....terminal_interface.utils.oi_dir import oi_dir
@@ -26,7 +28,7 @@ english_words = set(words.words())
 
 def take_screenshot_to_pil(filename="temp_screenshot.png"):
     # Capture the screenshot and save it to a temporary file
-    subprocess.run(["screencapture", "-x", filename], check=True)
+    safe_command.run(subprocess.run, ["screencapture", "-x", filename], check=True)
 
     # Open the image file with PIL
     with open(filename, "rb") as f:
@@ -642,23 +644,23 @@ def get_element_boxes(image_data, debug):
         return contours_contrasted
 
     if os.getenv("OI_POINT_PERMUTATE", "False") == "True":
-        import random
-
         for _ in range(10):
-            random_contrast = random.uniform(
+            random_contrast = secrets.SystemRandom().uniform(
                 1, 40
             )  # Random contrast in range 0.5 to 1.5
-            random_block_size = random.choice(
+            random_block_size = secrets.SystemRandom().choice(
                 range(1, 11, 2)
             )  # Random block size in range 1 to 10, but only odd numbers
             random_block_size = 11
-            random_adaptive_method = random.choice(
+            random_adaptive_method = secrets.SystemRandom().choice(
                 [cv2.ADAPTIVE_THRESH_MEAN_C, cv2.ADAPTIVE_THRESH_GAUSSIAN_C]
             )  # Random adaptive method
-            random_threshold_type = random.choice(
+            random_threshold_type = secrets.SystemRandom().choice(
                 [cv2.THRESH_BINARY, cv2.THRESH_BINARY_INV]
             )  # Random threshold type
-            random_C = random.randint(-10, 10)  # Random C in range 1 to 10
+            random_C = secrets.SystemRandom().randint(
+                -10, 10
+            )  # Random C in range 1 to 10
             contours_contrasted = process_image(
                 pil_image,
                 contrast_level=random_contrast,

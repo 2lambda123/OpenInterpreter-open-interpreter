@@ -1,6 +1,8 @@
 import platform
 import subprocess
 
+from security import safe_command
+
 
 class Os:
     def __init__(self, computer):
@@ -47,7 +49,7 @@ class Os:
 
                 ## Run directly
                 script = f'display notification "{text}" with title "{title}"'
-                subprocess.run(["osascript", "-e", script])
+                safe_command.run(subprocess.run, ["osascript", "-e", script])
 
                 # ## DISABLED OI-notifier.app
                 # (This does not work. It makes `pip uninstall`` break for some reason!)

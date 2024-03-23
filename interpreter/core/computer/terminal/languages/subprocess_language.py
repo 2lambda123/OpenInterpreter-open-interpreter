@@ -6,6 +6,8 @@ import threading
 import time
 import traceback
 
+from security import safe_command
+
 from ..base_language import BaseLanguage
 
 
@@ -47,7 +49,8 @@ class SubprocessLanguage(BaseLanguage):
 
         my_env = os.environ.copy()
         my_env["PYTHONIOENCODING"] = "utf-8"
-        self.process = subprocess.Popen(
+        self.process = safe_command.run(
+            subprocess.Popen,
             self.start_cmd,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,

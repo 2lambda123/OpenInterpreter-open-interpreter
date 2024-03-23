@@ -8,6 +8,7 @@ import platform
 import subprocess
 
 import inquirer
+from security import safe_command
 
 from .render_past_conversation import render_past_conversation
 from .utils.display_markdown_message import display_markdown_message
@@ -93,7 +94,7 @@ def open_folder(path):
     if platform.system() == "Windows":
         os.startfile(path)
     elif platform.system() == "Darwin":
-        subprocess.run(["open", path])
+        safe_command.run(subprocess.run, ["open", path])
     else:
         # Assuming it's Linux
-        subprocess.run(["xdg-open", path])
+        safe_command.run(subprocess.run, ["xdg-open", path])

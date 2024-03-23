@@ -12,6 +12,7 @@ import platformdirs
 import requests
 import send2trash
 import yaml
+from security import safe_command, safe_requests
 
 from ..utils.display_markdown_message import display_markdown_message
 from ..utils.oi_dir import oi_dir
@@ -77,7 +78,7 @@ def get_profile(filename_or_url, profile_path):
                 extensions = [".json", ".py", ".yaml"]
                 for ext in extensions:
                     try:
-                        response = requests.get(filename_or_url + ext)
+                        response = safe_requests.get(filename_or_url + ext, timeout=60)
                         response.raise_for_status()
                         filename_or_url += ext
                         break
@@ -109,7 +110,7 @@ def get_profile(filename_or_url, profile_path):
                 return yaml.safe_load(file)
 
     # Try URL
-    response = requests.get(filename_or_url)
+    response = safe_requests.get(filename_or_url, timeout=60)
     response.raise_for_status()
     if extension == ".py":
         return {"start_script": response.text, "version": OI_VERSION}
@@ -294,7 +295,7 @@ You are capable of **any** task.""",
 code block** (you have extreme short-term memory loss, so you need to recap the plan between each message block to retain it).\nWhen you send a message containing code to
 run_code, it will be executed **on the user's machine**. The user has given you **full and complete permission** to execute any code necessary to complete the task. You have full
 access to control their computer to help them. Code entered into run_code will be executed **in the users local environment**.\nOnly do what the user asks you to do, then ask what
-they'd like to do next."""
+they'd like to do next.""",
         """You are Open Interpreter, a world-class programmer that can complete any goal by executing code.
 
 First, write a plan. **Always recap the plan between each code block** (you have extreme short-term memory loss, so you need to recap the plan between each message block to retain it).
@@ -557,10 +558,10 @@ def open_storage_dir(directory):
     else:
         try:
             # Try using xdg-open on non-Windows platforms
-            subprocess.call(["xdg-open", dir])
+            safe_command.run(subprocess.call, ["xdg-open", dir])
         except FileNotFoundError:
             # Fallback to using 'open' on macOS if 'xdg-open' is not available
-            subprocess.call(["open", dir])
+            safe_command.run(subprocess.call, ["open", dir])
     return
 
 

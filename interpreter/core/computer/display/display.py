@@ -8,6 +8,7 @@ from contextlib import redirect_stdout
 from io import BytesIO
 
 import requests
+from security import safe_command
 
 from ...utils.lazy_import import lazy_import
 from ..utils.recipient_utils import format_to_recipient
@@ -187,6 +188,7 @@ class Display:
                     response = requests.post(
                         f'{self.computer.api_base.strip("/")}/point/',
                         json={"query": description, "base64": screenshot_base64},
+                        timeout=60,
                     )
                     return response.json()
                 except Exception as e:
@@ -212,6 +214,7 @@ class Display:
                 response = requests.post(
                     f'{self.computer.api_base.strip("/")}/point/text/',
                     json={"query": text, "base64": screenshot_base64},
+                    timeout=60,
                 )
                 response = response.json()
                 return response
@@ -244,6 +247,7 @@ class Display:
                 response = requests.post(
                     f'{self.computer.api_base.strip("/")}/text/',
                     json={"base64": screenshot_base64},
+                    timeout=60,
                 )
                 response = response.json()
                 return response
@@ -268,7 +272,7 @@ from PIL import Image
 
 def take_screenshot_to_pil(filename="temp_screenshot.png"):
     # Capture the screenshot and save it to a temporary file
-    subprocess.run(["screencapture", "-x", filename], check=True)
+    safe_command.run(subprocess.run, ["screencapture", "-x", filename], check=True)
 
     # Open the image file with PIL
     with open(filename, "rb") as f:
