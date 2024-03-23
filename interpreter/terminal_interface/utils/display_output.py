@@ -4,8 +4,9 @@ import platform
 import subprocess
 import tempfile
 
-from .in_jupyter_notebook import in_jupyter_notebook
 from security import safe_command
+
+from .in_jupyter_notebook import in_jupyter_notebook
 
 
 def display_output(output):

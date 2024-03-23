@@ -8,11 +8,11 @@ import platform
 import subprocess
 
 import inquirer
+from security import safe_command
 
 from .render_past_conversation import render_past_conversation
 from .utils.display_markdown_message import display_markdown_message
 from .utils.local_storage_path import get_storage_path
-from security import safe_command
 
 
 def conversation_navigator(interpreter):

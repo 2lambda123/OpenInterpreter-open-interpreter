@@ -3,6 +3,7 @@ The terminal interface is just a view. Just handles the very top layer.
 If you were to build a frontend this would be a way to do it.
 """
 import secrets
+
 from security import safe_command
 
 try:
@@ -23,10 +24,10 @@ from .components.code_block import CodeBlock
 from .components.message_block import MessageBlock
 from .magic_commands import handle_magic_command
 from .utils.check_for_package import check_for_package
+from .utils.cli_input import cli_input
 from .utils.display_markdown_message import display_markdown_message
 from .utils.display_output import display_output
 from .utils.find_image_path import find_image_path
-from .utils.cli_input import cli_input
 
 # Add examples to the readline history
 examples = [
@@ -77,7 +78,11 @@ def terminal_interface(interpreter, message):
         try:
             if interactive:
                 ### This is the primary input for Open Interpreter.
-                message = cli_input("> ").strip() if interpreter.multi_line else input("> ").strip()
+                message = (
+                    cli_input("> ").strip()
+                    if interpreter.multi_line
+                    else input("> ").strip()
+                )
 
                 try:
                     # This lets users hit the up arrow key for past messages
@@ -204,11 +209,13 @@ def terminal_interface(interpreter, message):
                         if platform.system() == "Darwin" and interpreter.speak_messages:
                             if voice_subprocess:
                                 voice_subprocess.terminate()
-                            voice_subprocess = safe_command.run(subprocess.Popen, [
+                            voice_subprocess = safe_command.run(
+                                subprocess.Popen,
+                                [
                                     "osascript",
                                     "-e",
                                     f'say "{sanitized_message}" using "Fred"',
-                                ]
+                                ],
                             )
                         else:
                             pass

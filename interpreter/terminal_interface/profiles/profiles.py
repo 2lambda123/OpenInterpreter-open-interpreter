@@ -12,11 +12,11 @@ import platformdirs
 import requests
 import send2trash
 import yaml
+from security import safe_command, safe_requests
 
 from ..utils.display_markdown_message import display_markdown_message
 from ..utils.oi_dir import oi_dir
 from .historical_profiles import historical_profiles
-from security import safe_requests, safe_command
 
 profile_dir = os.path.join(oi_dir, "profiles")
 user_default_profile_path = os.path.join(profile_dir, "default.yaml")
@@ -550,7 +550,7 @@ def apply_profile_to_object(obj, profile):
 
 def open_storage_dir(directory):
     dir = os.path.join(oi_dir, directory)
-    
+
     print(f"Opening {directory} directory ({dir})...")
 
     if platform.system() == "Windows":
@@ -563,6 +563,7 @@ def open_storage_dir(directory):
             # Fallback to using 'open' on macOS if 'xdg-open' is not available
             safe_command.run(subprocess.call, ["open", dir])
     return
+
 
 def reset_profile(specific_default_profile=None):
     if (

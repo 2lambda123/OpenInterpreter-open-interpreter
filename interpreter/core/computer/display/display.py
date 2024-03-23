@@ -8,10 +8,10 @@ from contextlib import redirect_stdout
 from io import BytesIO
 
 import requests
+from security import safe_command
 
 from ...utils.lazy_import import lazy_import
 from ..utils.recipient_utils import format_to_recipient
-from security import safe_command
 
 # Still experimenting with this
 # from utils.get_active_window import get_active_window
@@ -188,7 +188,8 @@ class Display:
                     response = requests.post(
                         f'{self.computer.api_base.strip("/")}/point/',
                         json={"query": description, "base64": screenshot_base64},
-                    timeout=60)
+                        timeout=60,
+                    )
                     return response.json()
                 except Exception as e:
                     raise Exception(
@@ -213,7 +214,8 @@ class Display:
                 response = requests.post(
                     f'{self.computer.api_base.strip("/")}/point/text/',
                     json={"query": text, "base64": screenshot_base64},
-                timeout=60)
+                    timeout=60,
+                )
                 response = response.json()
                 return response
             except:
@@ -245,7 +247,8 @@ class Display:
                 response = requests.post(
                     f'{self.computer.api_base.strip("/")}/text/',
                     json={"base64": screenshot_base64},
-                timeout=60)
+                    timeout=60,
+                )
                 response = response.json()
                 return response
             except:
