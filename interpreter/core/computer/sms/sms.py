@@ -6,6 +6,7 @@ from ..utils.run_applescript import run_applescript
 
 class SMS:
     """ """
+
     def __init__(self, computer):
         self.computer = computer
         self.messages_app = "Messages"

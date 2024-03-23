@@ -8,6 +8,7 @@ pyperclip = lazy_import("pyperclip")
 
 class Clipboard:
     """ """
+
     def __init__(self, computer):
         self.computer = computer
 

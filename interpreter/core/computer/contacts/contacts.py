@@ -5,6 +5,7 @@ from ..utils.run_applescript import run_applescript_capture
 
 class Contacts:
     """ """
+
     def __init__(self, computer):
         self.computer = computer
 

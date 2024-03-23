@@ -30,15 +30,12 @@ def validate_llm_settings(interpreter):
 
             # OpenAI
             if interpreter.llm.model in litellm.open_ai_chat_completion_models:
-                if (
-                    not os.environ.get("OPENAI_API_KEY")
-                    and not interpreter.llm.api_key
-                    and not interpreter.llm.api_base
-                ):
+                if (not os.environ.get("OPENAI_API_KEY")
+                        and not interpreter.llm.api_key
+                        and not interpreter.llm.api_base):
                     display_welcome_message_once()
 
-                    display_markdown_message(
-                        """---
+                    display_markdown_message("""---
                     > OpenAI API key not found
 
                     To use `GPT-4` (highly recommended) please provide an OpenAI API key.
@@ -46,18 +43,15 @@ def validate_llm_settings(interpreter):
                     To use another language model, consult the documentation at [docs.openinterpreter.com](https://docs.openinterpreter.com/language-model-setup/).
 
                     ---
-                    """
-                    )
+                    """)
 
                     response = prompt("OpenAI API key: ", is_password=True)
 
-                    display_markdown_message(
-                        """
+                    display_markdown_message("""
 
                     **Tip:** To save this key for later, run `export OPENAI_API_KEY=your_api_key` on Mac/Linux or `setx OPENAI_API_KEY your_api_key` on Windows.
 
-                    ---"""
-                    )
+                    ---""")
 
                     interpreter.llm.api_key = response
                     time.sleep(2)
@@ -83,13 +77,11 @@ def display_welcome_message_once():
 
     """
     if not hasattr(display_welcome_message_once, "_displayed"):
-        display_markdown_message(
-            """
+        display_markdown_message("""
         ●
 
         Welcome to **Open Interpreter**.
-        """
-        )
+        """)
         time.sleep(1.5)
 
         display_welcome_message_once._displayed = True

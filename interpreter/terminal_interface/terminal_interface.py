@@ -64,7 +64,8 @@ def terminal_interface(interpreter, message):
                     f"**Safe Mode**: {interpreter.safe_mode}\n\n>Note: **Safe Mode** requires `semgrep` (`pip install semgrep`)"
                 )
         else:
-            interpreter_intro_message.append("Use `interpreter -y` to bypass this.")
+            interpreter_intro_message.append(
+                "Use `interpreter -y` to bypass this.")
 
         interpreter_intro_message.append("Press `CTRL-C` to exit.")
 
@@ -82,11 +83,8 @@ def terminal_interface(interpreter, message):
         try:
             if interactive:
                 # This is the primary input for Open Interpreter.
-                message = (
-                    cli_input("> ").strip()
-                    if interpreter.multi_line
-                    else input("> ").strip()
-                )
+                message = (cli_input("> ").strip()
+                           if interpreter.multi_line else input("> ").strip())
 
                 try:
                     # This lets users hit the up arrow key for past messages
@@ -111,7 +109,9 @@ def terminal_interface(interpreter, message):
 
             # Many users do this
             if message.strip() == "interpreter --local":
-                print("Please exit this conversation, then run `interpreter --local`.")
+                print(
+                    "Please exit this conversation, then run `interpreter --local`."
+                )
                 continue
             if message.strip() == "pip install --upgrade open-interpreter":
                 print(
@@ -126,13 +126,11 @@ def terminal_interface(interpreter, message):
                 # If we found an image, add it to the message
                 if image_path:
                     # Add the text interpreter's messsage history
-                    interpreter.messages.append(
-                        {
-                            "role": "user",
-                            "type": "message",
-                            "content": message,
-                        }
-                    )
+                    interpreter.messages.append({
+                        "role": "user",
+                        "type": "message",
+                        "content": message,
+                    })
 
                     # Pass in the image to interpreter in a moment
                     message = {
@@ -156,19 +154,19 @@ def terminal_interface(interpreter, message):
                 # Comply with PyAutoGUI fail-safe for OS mode
                 # so people can turn it off by moving their mouse to a corner
                 if interpreter.os:
-                    if (
-                        chunk.get("format") == "output"
-                        and "failsafeexception" in chunk["content"].lower()
-                    ):
-                        print("Fail-safe triggered (mouse in one of the four corners).")
+                    if (chunk.get("format") == "output" and "failsafeexception"
+                            in chunk["content"].lower()):
+                        print(
+                            "Fail-safe triggered (mouse in one of the four corners)."
+                        )
                         break
 
                 if "end" in chunk and active_block:
                     active_block.refresh(cursor=False)
 
                     if chunk["type"] in [
-                        "message",
-                        "console",
+                            "message",
+                            "console",
                     ]:  # We don't stop on code's end — code + console output are actually one block.
                         active_block.end()
                         active_block = None
@@ -199,27 +197,24 @@ def terminal_interface(interpreter, message):
                                 i += 1
                         message = "\n".join(lines)
                         # Replace newlines with spaces, escape double quotes and backslashes
-                        sanitized_message = (
-                            message.replace("\\", "\\\\")
-                            .replace("\n", " ")
-                            .replace('"', '\\"')
-                        )
+                        sanitized_message = (message.replace(
+                            "\\", "\\\\").replace("\n",
+                                                  " ").replace('"', '\\"'))
 
                         # Display notification in OS mode
                         if interpreter.os:
                             interpreter.computer.os.notify(sanitized_message)
 
                         # Speak message aloud
-                        if platform.system() == "Darwin" and interpreter.speak_messages:
+                        if platform.system(
+                        ) == "Darwin" and interpreter.speak_messages:
                             if voice_subprocess:
                                 voice_subprocess.terminate()
-                            voice_subprocess = subprocess.Popen(
-                                [
-                                    "osascript",
-                                    "-e",
-                                    f'say "{sanitized_message}" using "Fred"',
-                                ]
-                            )
+                            voice_subprocess = subprocess.Popen([
+                                "osascript",
+                                "-e",
+                                f'say "{sanitized_message}" using "Fred"',
+                            ])
                         else:
                             pass
                             # User isn't on a Mac, so we can't do this. You should tell them something about that when they first set this up.
@@ -268,8 +263,7 @@ def terminal_interface(interpreter, message):
                             scan_code(code, language, interpreter)
 
                         response = input(
-                            "  Would you like to run this code? (y/n)\n\n  "
-                        )
+                            "  Would you like to run this code? (y/n)\n\n  ")
                         print("")  # <- Aesthetic choice
 
                         if response.strip().lower() == "y":
@@ -281,26 +275,22 @@ def terminal_interface(interpreter, message):
                             active_block.code = code
                         else:
                             # User declined to run code.
-                            interpreter.messages.append(
-                                {
-                                    "role": "user",
-                                    "type": "message",
-                                    "content": "I have declined to run this code.",
-                                }
-                            )
+                            interpreter.messages.append({
+                                "role":
+                                "user",
+                                "type":
+                                "message",
+                                "content":
+                                "I have declined to run this code.",
+                            })
                             break
 
                 # Computer can display visual types to user,
                 # Which sometimes creates more computer output (e.g. HTML errors, eventually)
-                if (
-                    chunk["role"] == "computer"
-                    and "content" in chunk
-                    and (
-                        chunk["type"] == "image"
-                        or ("format" in chunk and chunk["format"] == "html")
-                        or ("format" in chunk and chunk["format"] == "javascript")
-                    )
-                ):
+                if (chunk["role"] == "computer" and "content" in chunk and
+                    (chunk["type"] == "image" or
+                     ("format" in chunk and chunk["format"] == "html") or
+                     ("format" in chunk and chunk["format"] == "javascript"))):
                     if interpreter.os and interpreter.verbose == False:
                         # We don't display things to the user in OS control mode, since we use vision to communicate the screen to the LLM so much.
                         # But if verbose is true, we do display it!
@@ -315,42 +305,39 @@ def terminal_interface(interpreter, message):
                     # we just might want to change it in the future, once we're sure that a bunch of adjacent type:console blocks will be rendered normally to text-only LLMs
                     # and that if we made a new block here with "recipient: assistant" it wouldn't add new console outputs to that block (thus hiding them from the user)
 
-                    if (
-                        interpreter.messages[-1].get("format") != "output"
-                        or interpreter.messages[-1]["role"] != "computer"
-                        or interpreter.messages[-1]["type"] != "console"
-                    ):
+                    if (interpreter.messages[-1].get("format") != "output"
+                            or interpreter.messages[-1]["role"] != "computer"
+                            or interpreter.messages[-1]["type"] != "console"):
                         # If the last message isn't a console output, make a new block
-                        interpreter.messages.append(
-                            {
-                                "role": "computer",
-                                "type": "console",
-                                "format": "output",
-                                "content": extra_computer_output,
-                            }
-                        )
+                        interpreter.messages.append({
+                            "role":
+                            "computer",
+                            "type":
+                            "console",
+                            "format":
+                            "output",
+                            "content":
+                            extra_computer_output,
+                        })
                     else:
                         # If the last message is a console output, simply append the extra output to it
                         interpreter.messages[-1]["content"] += (
-                            "\n" + extra_computer_output
-                        )
-                        interpreter.messages[-1]["content"] = interpreter.messages[-1][
-                            "content"
-                        ].strip()
+                            "\n" + extra_computer_output)
+                        interpreter.messages[-1][
+                            "content"] = interpreter.messages[-1][
+                                "content"].strip()
 
                 # Console
                 if chunk["type"] == "console":
                     render_cursor = False
                     if "format" in chunk and chunk["format"] == "output":
                         active_block.output += "\n" + chunk["content"]
-                        active_block.output = (
-                            active_block.output.strip()
-                        )  # ^ Aesthetic choice
+                        active_block.output = (active_block.output.strip()
+                                               )  # ^ Aesthetic choice
 
                         # Truncate output
                         active_block.output = truncate_output(
-                            active_block.output, interpreter.max_output
-                        )
+                            active_block.output, interpreter.max_output)
                     if "format" in chunk and chunk["format"] == "active_line":
                         active_block.active_line = chunk["content"]
 
@@ -360,7 +347,8 @@ def terminal_interface(interpreter, message):
 
                             code_lines = active_block.code.split("\n")
                             if active_block.active_line < len(code_lines):
-                                action = code_lines[active_block.active_line].strip()
+                                action = code_lines[
+                                    active_block.active_line].strip()
 
                             if action.startswith("computer"):
                                 description = None
@@ -370,7 +358,8 @@ def terminal_interface(interpreter, message):
                                 end_index = action.rfind(")")
                                 if start_index != -1 and end_index != -1:
                                     # (If we found both)
-                                    arguments = action[start_index + 1 : end_index]
+                                    arguments = action[start_index +
+                                                       1:end_index]
                                 else:
                                     arguments = None
 
@@ -379,15 +368,16 @@ def terminal_interface(interpreter, message):
                                 # otherwise it will try to click this notification!
 
                                 if action in [
-                                    "computer.screenshot()",
-                                    "computer.display.screenshot()",
-                                    "computer.display.view()",
-                                    "computer.view()",
+                                        "computer.screenshot()",
+                                        "computer.display.screenshot()",
+                                        "computer.display.view()",
+                                        "computer.view()",
                                 ]:
                                     description = "Viewing screen..."
                                 elif action == "computer.mouse.click()":
                                     description = "Clicking..."
-                                elif action.startswith("computer.mouse.click("):
+                                elif action.startswith(
+                                        "computer.mouse.click("):
                                     if "icon=" in arguments:
                                         text_or_icon = "icon"
                                     else:
@@ -398,17 +388,19 @@ def terminal_interface(interpreter, message):
                                         text_or_icon = "icon"
                                     else:
                                         text_or_icon = "text"
-                                    if (
-                                        "click" in active_block.code
-                                    ):  # This could be better
+                                    if ("click" in active_block.code
+                                        ):  # This could be better
                                         description = f"Clicking {text_or_icon}..."
                                     else:
                                         description = f"Mousing over {text_or_icon}..."
-                                elif action.startswith("computer.keyboard.write("):
+                                elif action.startswith(
+                                        "computer.keyboard.write("):
                                     description = f"Typing {arguments}."
-                                elif action.startswith("computer.keyboard.hotkey("):
+                                elif action.startswith(
+                                        "computer.keyboard.hotkey("):
                                     description = f"Pressing {arguments}."
-                                elif action.startswith("computer.keyboard.press("):
+                                elif action.startswith(
+                                        "computer.keyboard.press("):
                                     description = f"Pressing {arguments}."
                                 elif action == "computer.os.get_selected_text()":
                                     description = f"Getting selected text."

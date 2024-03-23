@@ -8,6 +8,7 @@ aifs = lazy_import("aifs")
 
 class Files:
     """ """
+
     def __init__(self, computer):
         self.computer = computer
 
@@ -59,8 +60,9 @@ def get_close_matches_in_text(original_text, filedata, n=3):
 
     matches = []
     for i in range(len(words) - len_original + 1):
-        phrase = " ".join(words[i : i + len_original])
-        similarity = difflib.SequenceMatcher(None, original_text, phrase).ratio()
+        phrase = " ".join(words[i:i + len_original])
+        similarity = difflib.SequenceMatcher(None, original_text,
+                                             phrase).ratio()
         matches.append((similarity, phrase))
 
     matches.sort(reverse=True)
