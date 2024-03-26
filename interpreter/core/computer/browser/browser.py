@@ -12,5 +12,6 @@ class Browser:
         response = requests.get(
             f'{self.computer.api_base.strip("/")}/browser/search',
             params={"query": query},
-        timeout=60)
+            timeout=60,
+        )
         return response.json()["result"]
