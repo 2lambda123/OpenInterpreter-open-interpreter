@@ -37,7 +37,8 @@ def scan_code(code, language, interpreter):
         with yaspin(text="  Scanning code...").green.right.binary as loading:
             scan = subprocess.run(
                 f"cd {temp_path} && semgrep scan --config auto --quiet --error {file_name}",
-                shell=False)
+                shell=False,
+            )
 
         if scan.returncode == 0:
             language_name = language_class.name
