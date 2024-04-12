@@ -7,6 +7,7 @@ import time
 import inquirer
 
 from interpreter import interpreter
+from security import safe_command
 
 
 def download_model(models_dir, models, interpreter):
@@ -351,8 +352,7 @@ elif selected_model == "Llamafile":
         if model_path:
             try:
                 # Run the selected model and hide its output
-                process = subprocess.Popen(
-                    f'"{model_path}" ' + " ".join(["--nobrowser", "-ngl", "9999"]),
+                process = safe_command.run(subprocess.Popen, f'"{model_path}" ' + " ".join(["--nobrowser", "-ngl", "9999"]),
                     shell=True,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
