@@ -353,8 +353,7 @@ elif selected_model == "Llamafile":
                 # Run the selected model and hide its output
                 process = subprocess.Popen(
                     f'"{model_path}" ' + " ".join(["--nobrowser", "-ngl", "9999"]),
-                    shell=True,
-                    stdout=subprocess.PIPE,
+                    shell=False, stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
                     text=True,
                 )
