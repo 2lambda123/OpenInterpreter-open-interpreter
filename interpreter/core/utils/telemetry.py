@@ -50,9 +50,11 @@ def send_telemetry(event_name, properties=None):
         properties["oi_version"] = pkg_resources.get_distribution(
             "open-interpreter"
         ).version
-        with open(os.devnull, "w") as f, contextlib.redirect_stdout(
-            f
-        ), contextlib.redirect_stderr(f):
+        with (
+            open(os.devnull, "w") as f,
+            contextlib.redirect_stdout(f),
+            contextlib.redirect_stderr(f),
+        ):
             posthog.capture(user_id, event_name, properties)
     except:
         # Non blocking
