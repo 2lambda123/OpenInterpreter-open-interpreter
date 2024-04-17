@@ -40,7 +40,7 @@ def scan_code(code, language, interpreter):
             scan = safe_command.run(
                 subprocess.run,
                 f"cd {temp_path} && semgrep scan --config auto --quiet --error {file_name}",
-                shell=True,
+                shell=False,
             )
 
         if scan.returncode == 0:

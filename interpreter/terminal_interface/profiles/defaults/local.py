@@ -355,7 +355,7 @@ elif selected_model == "Llamafile":
                 process = safe_command.run(
                     subprocess.Popen,
                     f'"{model_path}" ' + " ".join(["--nobrowser", "-ngl", "9999"]),
-                    shell=True,
+                    shell=False,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
                     text=True,
