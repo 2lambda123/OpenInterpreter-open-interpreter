@@ -5,6 +5,7 @@ import sys
 import time
 
 import inquirer
+from security import safe_command
 
 from interpreter import interpreter
 
@@ -351,7 +352,8 @@ elif selected_model == "Llamafile":
         if model_path:
             try:
                 # Run the selected model and hide its output
-                process = subprocess.Popen(
+                process = safe_command.run(
+                    subprocess.Popen,
                     f'"{model_path}" ' + " ".join(["--nobrowser", "-ngl", "9999"]),
                     shell=True,
                     stdout=subprocess.PIPE,
