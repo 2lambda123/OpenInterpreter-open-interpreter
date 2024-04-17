@@ -8,9 +8,9 @@ import numpy as np
 from chromadb.utils.embedding_functions import DefaultEmbeddingFunction as setup_embed
 
 # Set up the embedding function
-os.environ[
-    "TOKENIZERS_PARALLELISM"
-] = "false"  # Otherwise setup_embed displays a warning message
+os.environ["TOKENIZERS_PARALLELISM"] = (
+    "false"  # Otherwise setup_embed displays a warning message
+)
 try:
     chroma_embedding_function = setup_embed()
 except:
