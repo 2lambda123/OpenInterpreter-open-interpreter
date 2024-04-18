@@ -9,7 +9,8 @@ class Browser:
         """
         Searches the web for the specified query and returns the results.
         """
-        response = safe_requests.get(f'{self.computer.api_base.strip("/")}/browser/search',
+        response = safe_requests.get(
+            f'{self.computer.api_base.strip("/")}/browser/search',
             params={"query": query},
             timeout=60,
         )

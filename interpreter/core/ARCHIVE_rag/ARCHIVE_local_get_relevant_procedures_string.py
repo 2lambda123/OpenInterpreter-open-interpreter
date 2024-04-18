@@ -4,8 +4,9 @@
 # but it's just too much to download for the average user.
 
 
-from ..utils.vector_search import search
 from security import safe_requests
+
+from ..utils.vector_search import search
 
 
 def get_relevant_procedures_string(interpreter):

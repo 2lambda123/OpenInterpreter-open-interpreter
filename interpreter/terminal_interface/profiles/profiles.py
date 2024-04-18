@@ -12,11 +12,11 @@ import platformdirs
 import requests
 import send2trash
 import yaml
+from security import safe_requests
 
 from ..utils.display_markdown_message import display_markdown_message
 from ..utils.oi_dir import oi_dir
 from .historical_profiles import historical_profiles
-from security import safe_requests
 
 profile_dir = os.path.join(oi_dir, "profiles")
 user_default_profile_path = os.path.join(profile_dir, "default.yaml")
