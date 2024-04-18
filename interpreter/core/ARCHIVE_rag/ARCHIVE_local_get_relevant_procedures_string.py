@@ -3,9 +3,9 @@
 # I think in time we'll find the right way to do this conditionally,
 # but it's just too much to download for the average user.
 
-import requests
 
 from ..utils.vector_search import search
+from security import safe_requests
 
 
 def get_relevant_procedures_string(interpreter):
@@ -22,7 +22,7 @@ def get_relevant_procedures_string(interpreter):
     ):
         # Let's get Open Procedures from Github
         url = "https://raw.githubusercontent.com/KillianLucas/open-procedures/main/procedures_db.json"
-        response = requests.get(url, timeout=60)
+        response = safe_requests.get(url, timeout=60)
         interpreter._procedures_db = response.json()
         interpreter.procedures = interpreter._procedures_db.keys()
 
