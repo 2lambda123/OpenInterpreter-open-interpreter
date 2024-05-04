@@ -56,7 +56,7 @@ class Mouse:
                 '"' + text + '"', screenshot=screenshot
             )
 
-            is_fuzzy = any([c["similarity"] != 1 for c in coordinates])
+            is_fuzzy = any(c["similarity"] != 1 for c in coordinates)
             # nah just hey, if it's fuzzy, then whatever, it prob wont see the message then decide something else (not really smart enough yet usually)
             # so for now, just lets say it's always not fuzzy so if there's 1 coord it will pick it automatically
             is_fuzzy = False
