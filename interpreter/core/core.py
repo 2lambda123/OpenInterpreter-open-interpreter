@@ -70,12 +70,16 @@ class OpenInterpreter:
         import_skills=True,
         multi_line=False,
     ):
-        force_task_completion_breakers = [
+        force_task_completion_breakers = (
+            [
                 "the task is done.",
                 "the task is impossible.",
                 "let me know what you'd like to do next.",
                 "please provide more information.",
-            ] if force_task_completion_breakers is None else force_task_completion_breakers
+            ]
+            if force_task_completion_breakers is None
+            else force_task_completion_breakers
+        )
         # State
         self.messages = [] if messages is None else messages
         self.responding = False
