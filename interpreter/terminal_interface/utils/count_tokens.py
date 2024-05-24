@@ -44,10 +44,11 @@ def token_cost(tokens=0, model="gpt-4"):
         return 0
 
 
-def count_messages_tokens(messages=[], model=None):
+def count_messages_tokens(messages=None, model=None):
     """
     Count the number of tokens in a list of messages
     """
+    messages = [] if messages is None else messages
     try:
         tokens_used = 0
 

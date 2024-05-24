@@ -52,12 +52,7 @@ class OpenInterpreter:
         shrink_images=False,
         force_task_completion=False,
         force_task_completion_message="""Proceed. You CAN run code on my machine. If you want to run code, start your message with "```"! If the entire task I asked for is done, say exactly 'The task is done.' If you need some specific information (like username or password) say EXACTLY 'Please provide more information.' If it's impossible, say 'The task is impossible.' (If I haven't provided a task, say exactly 'Let me know what you'd like to do next.') Otherwise keep going.""",
-        force_task_completion_breakers=[
-            "the task is done.",
-            "the task is impossible.",
-            "let me know what you'd like to do next.",
-            "please provide more information.",
-        ],
+        force_task_completion_breakers=None,
         anonymous_telemetry=os.getenv("ANONYMIZED_TELEMETRY", "True") == "True",
         in_terminal_interface=False,
         conversation_history=True,
@@ -75,6 +70,12 @@ class OpenInterpreter:
         import_skills=True,
         multi_line=False,
     ):
+        force_task_completion_breakers = [
+                "the task is done.",
+                "the task is impossible.",
+                "let me know what you'd like to do next.",
+                "please provide more information.",
+            ] if force_task_completion_breakers is None else force_task_completion_breakers
         # State
         self.messages = [] if messages is None else messages
         self.responding = False
